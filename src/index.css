@@ -18,8 +18,11 @@ body {
   button {
     @apply rounded-md py-1 px-3;
   }
+}
 
-  h1 {
-    @apply text-3xl text-center my-20 text-black font-bold;
-  }
+
+/* Anasayfa Grid Düzeni*/
+.feed{
+  display: grid;
+  grid-template-columns: 1fr minmax(400px,600px) 1fr;
 }
