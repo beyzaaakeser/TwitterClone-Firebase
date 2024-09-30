@@ -18,4 +18,8 @@ body {
   button {
     @apply rounded-md py-1 px-3;
   }
+
+  h1 {
+    @apply text-3xl text-center my-20 text-black font-bold;
+  }
 }
