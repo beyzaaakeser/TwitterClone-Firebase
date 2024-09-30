@@ -12,7 +12,7 @@ const GoogleButton = () => {
         toast.success('Oturum Açıldı');
         navigate('/feed');
       })
-      .catch((err) => toast.err('HATA! ' + err.code));
+      .catch((err) => toast.error('HATA! ' + err.code));
   };
 
   return (
