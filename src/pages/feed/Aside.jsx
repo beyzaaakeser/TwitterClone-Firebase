@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const Aside = () => {
-  return (
-    <div className='max-xl:hidden'>Aside</div>
-  )
-}
+  return <div className="max-xl:hidden">Aside</div>;
+};
 
-export default Aside
+export default React.memo(Aside);
