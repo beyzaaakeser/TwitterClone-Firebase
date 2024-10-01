@@ -1,16 +1,34 @@
 import React from 'react';
 import { BsCardImage } from 'react-icons/bs';
 import { toast } from 'react-toastify';
+import { db } from '../../firebase';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import  uploadToStorage  from '../../firebase/uploadStorage';
 
 const Form = ({ user }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const text = e.target[0].value.trim();
-    const file = e.target[1].value;
+    const file = e.target[1].files[0];
 
-    if(!text && !file) return toast.warning("Lütfen içerik giriniz") 
+    if (!text && !file) return toast.warning('Lütfen içerik giriniz');
 
-     collection()   
+    const url = await uploadToStorage(file);
+
+    const tweetsCol = collection(db, 'tweets');
+
+    await addDoc(tweetsCol, {
+      textContent: text,
+      imageContent: url,
+      isEdited: false,
+      likes: [],
+      user: {
+        id: user.uid,
+        name: user.displayName,
+        photo: user.photoURL,
+      },
+      createdAt: serverTimestamp(),
+    });
   };
   return (
     <form
