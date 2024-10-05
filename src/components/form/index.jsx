@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BsCardImage } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import { db } from '../../firebase';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import  uploadToStorage  from '../../firebase/uploadStorage';
+import uploadToStorage from '../../firebase/uploadStorage';
+import Loader from '../loader';
 
 const Form = ({ user }) => {
+  const [isLoading, setIsLoading] = useState();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const text = e.target[0].value.trim();
     const file = e.target[1].files[0];
 
     if (!text && !file) return toast.warning('Lütfen içerik giriniz');
+
+    setIsLoading(true);
 
     const url = await uploadToStorage(file);
 
@@ -29,6 +33,8 @@ const Form = ({ user }) => {
       },
       createdAt: serverTimestamp(),
     });
+    setIsLoading(false);
+    e.target.reset();
   };
   return (
     <form
@@ -55,10 +61,11 @@ const Form = ({ user }) => {
           </label>
 
           <button
+            disabled={isLoading}
             className="bg-blue-600 px-3 py-2 rounded-full 
-          min-w-[85px] min-h-[40px] transition hover:bg-blue-800"
+          min-w-[85px] min-h-[40px] transition hover:bg-blue-800 grid place-items-center"
           >
-            Tweetle
+            {isLoading ? <Loader /> : 'Tweetle'}
           </button>
         </div>
       </div>
