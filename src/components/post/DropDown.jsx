@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { auth, db } from '../../firebase';
 import { MdEdit } from 'react-icons/md';
 import { FaTrash } from 'react-icons/fa6';
@@ -8,21 +8,23 @@ import EditModal from '../modal/EditModal';
 
 const DropDown = ({ tweet }) => {
   const isOwn = tweet.user.id === auth.currentUser.uid;
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+
+  const inputRef = useRef(null);
 
   const handleDelete = () => {
     const tweetRef = doc(db, 'tweets', tweet.id);
 
     deleteDoc(tweetRef)
-    .then(() => toast.info("Tweet akıştan kaldırıldı."))
-    .catch((error) => toast.error("Bir sorun oluştu." + error ));
+      .then(() => toast.info('Tweet akıştan kaldırıldı.'))
+      .catch((error) => toast.error('Bir sorun oluştu.' + error));
   };
   return (
     isOwn && (
       <div>
         <label className="popup">
-          <input type="checkbox" />
-          <div className="burger" tabindex="0">
+          <input ref={inputRef} type="checkbox" />
+          <div className="burger" tabIndex="0">
             <span></span>
             <span></span>
             <span></span>
@@ -47,7 +49,14 @@ const DropDown = ({ tweet }) => {
           </nav>
         </label>
 
-        <EditModal isOpen={isOpen} close={() => setIsOpen(false)}/>
+        <EditModal
+          isOpen={isOpen}
+          close={() => {
+            inputRef.current.checked = false;
+            setIsOpen(false);
+          }}
+          tweet={tweet}
+        />
       </div>
     )
   );
