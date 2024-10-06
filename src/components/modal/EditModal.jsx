@@ -4,7 +4,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { toast } from 'react-toastify';
 import uploadToStorage from '../../firebase/uploadStorage';
-
+import { FaRegImages } from 'react-icons/fa';
 const EditModal = ({ isOpen, close, tweet }) => {
   const [isPicDeleting, setIsPicDeleting] = useState(false);
 
@@ -53,7 +53,17 @@ const EditModal = ({ isOpen, close, tweet }) => {
             Resmi Kaldır
           </button>
         ) : (
-          <input type="file" />
+          <div>
+            <label
+              htmlFor="file"
+              className="flex items-center  gap-2 w-[140px] bg-gray-600 
+              cursor-pointer rounded p-1  justify-center hover:bg-gray-700 transition"
+            >
+              Dosya Seç <FaRegImages className="size-6" />
+            </label>
+
+            <input type="file" id="file" hidden="true" />
+          </div>
         )}
 
         <div className="flex justify-end gap-5 mt-8">
