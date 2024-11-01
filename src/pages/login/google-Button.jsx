@@ -22,7 +22,7 @@ const GoogleButton = () => {
     rounded-full gap-3 transition hover:bg-gray-300
      text-black whitespace-nowrap"
     >
-      <img src="./public/google.png" className="h-[20px]" alt="google-logo" />
+      <img src="../../../public/google.png" className="h-[20px]" alt="google-logo" />
       Google ile Giriş Yap
     </button>
   );
