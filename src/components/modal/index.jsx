@@ -17,3 +17,5 @@ export const Modal = ({ children, isOpen, close }) => {
     )
   );
 };
+
+export default Modal;

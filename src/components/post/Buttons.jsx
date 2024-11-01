@@ -1,5 +1,5 @@
 import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   FaHeart,
   FaRegComment,
@@ -8,10 +8,11 @@ import {
   FaShareNodes,
 } from 'react-icons/fa6';
 import { auth, db } from '../../firebase';
+import CommentModal from '../modal/CommentModal';
 
 const Buttons = ({ tweet }) => {
   const isLiked = tweet.likes.includes(auth.currentUser.uid);
-
+  const [isOpen, setIsOpen] = useState(false);
   const toggleLike = async () => {
     const tweetRef = doc(db, 'tweets', tweet.id);
 
@@ -21,13 +22,26 @@ const Buttons = ({ tweet }) => {
         : arrayUnion(auth.currentUser.uid),
     });
   };
+
+  const handleComment = async () => {
+    setIsOpen(true);
+  };
   return (
     <div className="flex justify-between items-center">
       <div
         className="p-3 rounded-full cursor-pointer transition 
       hover:bg-blue-400/40"
+        onClick={handleComment}
       >
-        <FaRegComment />
+        <FaRegComment
+          className={
+            tweet.comments?.length > 0 ? 'text-blue-500' : 'text-gray-500'
+          }
+        />
+
+        {tweet.comments?.length > 0 && (
+          <span className="w-2 text-sm">{tweet.comments?.length}</span>
+        )}
       </div>
       <div
         className="p-3 rounded-full cursor-pointer transition 
@@ -41,7 +55,9 @@ const Buttons = ({ tweet }) => {
       hover:bg-red-400/30 flex items-center gap-1 "
       >
         {isLiked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
-        {tweet.likes.length}
+        {tweet.likes.length > 0 && (
+          <span className="w-2 text-sm">{tweet.likes.length}</span>
+        )}
       </div>
       <div
         className="p-3 rounded-full cursor-pointer transition 
@@ -49,6 +65,14 @@ const Buttons = ({ tweet }) => {
       >
         <FaShareNodes />
       </div>
+
+      <CommentModal
+        tweet={tweet}
+        isOpen={isOpen}
+        close={() => {
+          setIsOpen(false);
+        }}
+      />
     </div>
   );
 };

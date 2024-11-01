@@ -5,7 +5,7 @@ import { db } from '../../firebase';
 import { toast } from 'react-toastify';
 import uploadToStorage from '../../firebase/uploadStorage';
 import { FaRegImages } from 'react-icons/fa';
-const EditModal = ({ isOpen, close, tweet }) => {
+const EditModal = ({ isOpen, close, tweet, setEditOpen }) => {
   const [isPicDeleting, setIsPicDeleting] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -20,7 +20,6 @@ const EditModal = ({ isOpen, close, tweet }) => {
 
     if (isPicDeleting) {
       updatedData.imageContent = null;
-      setIsPicDeleting(false);
     }
 
     if (file) {
@@ -31,9 +30,13 @@ const EditModal = ({ isOpen, close, tweet }) => {
     await updateDoc(tweetRef, updatedData)
       .then(() => {
         toast.success('Tweet güncellendi');
-        close();
       })
       .catch(() => toast.error('Tweet güncellenirken bir sorun oluştu.'));
+
+    setEditOpen(false);
+    setIsPicDeleting(false);
+    //modal kapat
+    close();
   };
 
   return (
@@ -46,14 +49,22 @@ const EditModal = ({ isOpen, close, tweet }) => {
 
         <label className="mt-10 mb-2">Fotoğraf Ekle / Değiştir</label>
         {!isPicDeleting && tweet.imageContent ? (
-          <button
-            onClick={() => setIsPicDeleting(true)}
-            className=" bg-orange-500"
-          >
-            Resmi Kaldır
-          </button>
+          <div className="flex flex-col mt-8 mb-2">
+            <label className={'mb-2'} htmlFor="">
+              Fotograf Ekle / Değiştir
+            </label>
+            <button
+              className="bg-amber-500"
+              type="button"
+              onClick={() => {
+                setIsPicDeleting(true);
+              }}
+            >
+              Resmi kaldır
+            </button>
+          </div>
         ) : (
-          <div>
+          <div className="mt-8">
             <label
               htmlFor="file"
               className="flex items-center  gap-2 w-[140px] bg-gray-600 
@@ -69,12 +80,15 @@ const EditModal = ({ isOpen, close, tweet }) => {
         <div className="flex justify-end gap-5 mt-8">
           <button
             type="button"
-            onClick={close}
-            className="bg-gray-500 hover:bg-gray-600 transition"
+            onClick={() => {
+              close;
+              setEditOpen(false);
+            }}
+            className="rounded hover:bg-zinc-700 transition border border-red-500 text-red-500 px-4"
           >
             Vazgeç
           </button>
-          <button className="bg-blue-500 hover:bg-blue-600 transition">
+          <button className="bg-blue-500 hover:bg-blue-600 transition  text-green-600 border border-green-500 px-3">
             Kaydet
           </button>
         </div>
