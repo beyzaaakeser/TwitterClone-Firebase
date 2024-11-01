@@ -30,7 +30,7 @@ const Buttons = ({ tweet }) => {
     <div className="flex justify-between items-center">
       <div
         className="p-3 rounded-full cursor-pointer transition 
-      hover:bg-blue-400/40"
+      hover:bg-blue-400/40 flex items-center gap-2"
         onClick={handleComment}
       >
         <FaRegComment

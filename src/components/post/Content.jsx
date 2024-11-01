@@ -1,5 +1,4 @@
 import React from 'react';
-import { ImGift } from 'react-icons/im';
 
 const Content = ({ tweet }) => {
   return (

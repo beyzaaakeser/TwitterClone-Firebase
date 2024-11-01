@@ -24,12 +24,14 @@ const EditModal = ({ isOpen, close, tweet, setEditOpen }) => {
 
     if (file) {
       const imageURL = await uploadToStorage(file);
+      setIsPicDeleting(false);
       updatedData.imageContent = imageURL;
     }
 
     await updateDoc(tweetRef, updatedData)
       .then(() => {
         toast.success('Tweet güncellendi');
+        close();
       })
       .catch(() => toast.error('Tweet güncellenirken bir sorun oluştu.'));
 
@@ -88,7 +90,7 @@ const EditModal = ({ isOpen, close, tweet, setEditOpen }) => {
           >
             Vazgeç
           </button>
-          <button className="bg-blue-500 hover:bg-blue-600 transition  text-green-600 border border-green-500 px-3">
+          <button className="bg-blue-500 hover:bg-blue-600 transition  text-white">
             Kaydet
           </button>
         </div>
