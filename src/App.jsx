@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Feed from './pages/feed/index.jsx';
-import Login from './pages/Login/index.jsx';
+import Login from './pages/login/index.jsx';
 import Protected from './components/protected/index.jsx';
 
 const App = () => {
